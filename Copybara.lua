@@ -17,7 +17,7 @@ local configForLS = {
 
 -- WoW API's
 local _G = _G
-local GetAddOnMetadata, GetChatWindowInfo, GetChatWindowMessages, GetChatWindowChannels, GetChatWindowSavedDimensions, GetChatWindowSavedPosition, SetChatWindowName, SetChatWindowColor, SetChatWindowAlpha, SetChatWindowSize, SetChatWindowShown, SetChatWindowLocked, SetChatWindowDocked, SetChatWindowUninteractable, SetChatWindowSavedDimensions = GetAddOnMetadata, GetChatWindowInfo, GetChatWindowMessages, GetChatWindowChannels, GetChatWindowSavedDimensions, GetChatWindowSavedPosition, SetChatWindowName, SetChatWindowColor, SetChatWindowAlpha, SetChatWindowSize, SetChatWindowShown, SetChatWindowLocked, SetChatWindowDocked, SetChatWindowUninteractable, SetChatWindowSavedDimensions
+local GetAddOnMetadata, if GetChatWindowInfo then GetChatWindowInfo else print("GetChatWindowInfo not available in this WoW version") end, GetChatWindowMessages, GetChatWindowChannels, GetChatWindowSavedDimensions, GetChatWindowSavedPosition, if SetChatWindowName then SetChatWindowName else print("SetChatWindowName not available in this WoW version") end, SetChatWindowColor, SetChatWindowAlpha, SetChatWindowSize, SetChatWindowShown, SetChatWindowLocked, SetChatWindowDocked, SetChatWindowUninteractable, SetChatWindowSavedDimensions = GetAddOnMetadata, if GetChatWindowInfo then GetChatWindowInfo else print("GetChatWindowInfo not available in this WoW version") end, GetChatWindowMessages, GetChatWindowChannels, GetChatWindowSavedDimensions, GetChatWindowSavedPosition, if SetChatWindowName then SetChatWindowName else print("SetChatWindowName not available in this WoW version") end, SetChatWindowColor, SetChatWindowAlpha, SetChatWindowSize, SetChatWindowShown, SetChatWindowLocked, SetChatWindowDocked, SetChatWindowUninteractable, SetChatWindowSavedDimensions
 
 local ChatFrame_RemoveAllMessageGroups, ChatFrame_RemoveAllChannels, ChatFrame_ReceiveAllPrivateMessages, ChatFrame_AddMessageGroup = ChatFrame_RemoveAllMessageGroups, ChatFrame_RemoveAllChannels, ChatFrame_ReceiveAllPrivateMessages, ChatFrame_AddMessageGroup
 
@@ -154,7 +154,7 @@ function Copybara:GetConfig()
       local f = _G["ChatFrame" .. i]
       local width, height = GetChatWindowSavedDimensions(i)
       local point, xOfs, yOfs = GetChatWindowSavedPosition(i)
-      local name, fontSize, r, g, b, alpha, shown, locked, docked, uninteractable = GetChatWindowInfo(i)
+      local name, fontSize, r, g, b, alpha, shown, locked, docked, uninteractable = if GetChatWindowInfo then GetChatWindowInfo else print("GetChatWindowInfo not available in this WoW version") end(i)
       local DefaultMessages = { GetChatWindowMessages(f:GetID()) }
       local DefaultChannels = { GetChatWindowChannels(f:GetID()) }
 
@@ -232,7 +232,7 @@ function Copybara:LoadConfig(config)
 
           -- initialize the frame
           chatFrame:SetParent(_G[savedFrame.parentName])
-          SetChatWindowName(chatFrameIndex, savedFrame.name)
+          if SetChatWindowName then SetChatWindowName else print("SetChatWindowName not available in this WoW version") end(chatFrameIndex, savedFrame.name)
           SetChatWindowColor(chatFrameIndex, savedFrame.r, savedFrame.g, savedFrame.b)
           SetChatWindowAlpha(chatFrameIndex, savedFrame.alpha)
           SetChatWindowSize(chatFrameIndex, savedFrame.fontSize)
